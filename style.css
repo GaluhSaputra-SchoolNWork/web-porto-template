@@ -36,4 +36,15 @@ nav {
     width: 30%;
     background: #ccc;
     padding: 20px;
-}  
+} 
+
+.card {
+    width: 300px; /* Ukuran tetap untuk card */
+    margin: 10px; /* Jarak antar card */
+}
+
+.card-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Responsif jumlah card */
+    gap: 10px; /* Jarak antar card */
+}
