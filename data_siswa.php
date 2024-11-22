@@ -1,6 +1,6 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/azzyra-nathalyne/koneksi.php';
-$sql = "SELECT * FROM siswa ORDER BY nisn DESC";
+$sql = "SELECT * FROM siswa ORDER BY nisn ASC";
 $result = $conn->query($sql);
 ?>
 <!DOCTYPE html>
@@ -15,37 +15,49 @@ $result = $conn->query($sql);
 
 <!-- style="background-image: url('./img/bg.jpg');" -->
 <body class="p-5">
+<div class="row wide main-nav-wrap">
+    <nav class="column lg-12 main-nav">
+        <ul>
+            <li><a href="data_guru.php" class="home-link">Guru</a></li>
+            <li><a href="data_presensi.php" class="smoothscroll">Presensi</a></li>
+        </ul>
+    </nav>
+</div>
+
     <h2 class="mb-5">Data Siswa</h2>
-    <table class="table table-hover table-light border border-black">
-        <thead>
-            <tr>
-                <th>No</th>
-                <th>NISN</th>
-                <th>Nama</th>
-                <th>Atur</th>
-            </tr>
-        </thead>
-        <tbody>
+
+    <div class="row row-cols-1 row-cols-md-2 g-4">
             <?php
             if ($result->num_rows > 0) {
                 $no = 1;
                 // Looping data dari database
                 while ($row = $result->fetch_assoc()) {
-                    echo "<tr>";
-                    echo "<td>" . $no++ . "</td>";
-                    echo "<td>" . $row['nisn'] . "</td>";
-                    echo "<td>" . $row['nama_siswa'] . "</td>";
-                    echo "<td> <button type=\"button\" class=\"btn btn-light btn-sm\"><a href='./pages/edit.php?id=" . $row['nisn'] . "'>Edit</a></button> | ";
-                    echo "<button type=\"button\" class=\"btn btn-light btn-sm\"><a href='./actions/delete.php?id=" . $row['nisn'] . "' onclick='return confirm(\"Apakah anda yakin ingin menghapus data ini?\");'>Hapus</a></button> </td>";
-                    echo "</td>";
-                    echo "</tr>";
-               }
+                    if ($row['foto_siswa'] === NULL ) {
+                        $src = 'group_4.png';
+                    } else {
+                        $src = $row['foto_siswa'];
+                    }
+
+                    echo '<div class="col">';
+                    echo '<div class="card">';
+                    echo '<img src="fotosiswa/' . $src . '" class="card-img-top" alt="' . $row['nama_siswa'] . '">';
+                    echo '<div class="card-body">';
+                    echo '<h5 class="card-title">' . $row['nama_siswa'] . '</h5>';
+                    echo '<p class="card-text">NISN: ' . $row['nisn'] . '</p>';
+                    echo '<p class="card-text">Kelas: ' . $row['kelas'] . '</p>';
+                    echo '<p class="card-text">Jurusan: ' . $row['id_jurusan'] . '</p>';
+                    echo '<a href="./pages/edit.php?id=' . $row['nisn'] . '" class="btn btn-success btn-sm">Edit</a>';
+                    echo '<a href="./actions/delete.php?id=' . $row['nisn'] . '" class="btn btn-danger btn-sm" onclick="return confirm(\'Apakah anda yakin ingin menghapus data ini?\');">Hapus</a>';
+                    echo '</div>';
+                    echo '</div>';
+                    echo '</div>';
+                }
             } else {
-                echo "<tr><td colspan='5'>Belum ada data.</td></tr>";
+                echo "<div class='col-12'>Belum ada data.</div>";
             }
             ?>
-        </tbody>
-    </table> <br>
+        </div>
+
     <a class= "btn btn-primary" href="pages/create.php">Tambah Data Baru</a>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>

@@ -15,6 +15,15 @@ $result = $conn->query($sql);
 
 <!-- style="background-image: url('./img/bg.jpg');" -->
 <body class="p-5">
+<div class="row wide main-nav-wrap">
+    <nav class="column lg-12 main-nav">
+        <ul>
+            <li><a href="data_presensi.php" class="home-link">Presensi</a></li>
+            <li><a href="data_siswa.php" class="smoothscroll">Siswa</a></li>
+        </ul>
+    </nav>
+</div>
+
     <h2 class="mb-5">Data Guru</h2>
     <table class="table table-hover table-light border border-black">
         <thead>
