@@ -1,6 +1,6 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/azzyra-nathalyne/koneksi.php';
-$sql = "SELECT * FROM siswa ORDER BY nisn ASC";
+$sql = "SELECT s.*, j.* FROM siswa s JOIN jurusan j ON s.id_jurusan = j.id_jurusan ORDER BY nisn ASC";
 $result = $conn->query($sql);
 ?>
 <!DOCTYPE html>
@@ -27,6 +27,8 @@ $result = $conn->query($sql);
 
     <h2 class="mb-5">Data Siswa</h2>
 
+    <a class= "btn btn-primary" href="pages/create.php">Tambah Data Baru</a>
+
     <div class="card-container">
             <?php
             if ($result->num_rows > 0) {
@@ -45,7 +47,7 @@ $result = $conn->query($sql);
                     echo '<h5 class="card-title">' . $row['nama_siswa'] . '</h5>';
                     echo '<p class="card-text">NISN: ' . $row['nisn'] . '</p>';
                     echo '<p class="card-text">Kelas: ' . $row['kelas'] . '</p>';
-                    echo '<p class="card-text">Jurusan: ' . $row['id_jurusan'] . '</p>';
+                    echo '<p class="card-text">Jurusan: ' . $row['jurusan'] . '</p>';
                     echo '<a href="./pages/edit.php?id=' . $row['nisn'] . '" class="btn btn-success btn-sm">Edit</a>';
                     echo '<a href="./actions/delete.php?id=' . $row['nisn'] . '" class="btn btn-danger btn-sm" onclick="return confirm(\'Apakah anda yakin ingin menghapus data ini?\');">Hapus</a>';
                     echo '</div>';
@@ -57,7 +59,6 @@ $result = $conn->query($sql);
             ?>
         </div>
 
-    <a class= "btn btn-primary" href="pages/create.php">Tambah Data Baru</a>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 
