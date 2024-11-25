@@ -11,8 +11,8 @@
 <body class="p-5">
     <h2>Tambah Data Presensi Baru</h2>
     <form action="../actions/store.php" method="POST">
-        <label for="nisn">NISN :</label><br>
-        <input class="form-control" type="text" id="nisn" name="nisn" maxlength="10" required><br>
+        <label for="nisn">NISN/Nama :</label><br>
+        <input class="form-control" type="text" id="nisn" name="nisn" maxlength="50" required placeholder="Masukkan NISN atau Nama"><br>
 
         <label for="status">Status :</label><br>
         <select class="form-control" name="status" id="status">
