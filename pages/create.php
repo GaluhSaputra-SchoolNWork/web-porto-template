@@ -35,6 +35,17 @@
         <button class="btn btn-primary" type="submit">Simpan</button>
     </form>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    
+    <script>
+        // Mengatur input tanggal ke tanggal saat ini
+        document.getElementById('tanggal').value = new Date().toISOString().split('T')[0];
+
+        // Mengatur input jam masuk ke waktu saat ini
+        const now = new Date();
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        document.getElementById('jam_masuk').value = `${hours}:${minutes}`
+    </script>
 </body>
 
 </html>
