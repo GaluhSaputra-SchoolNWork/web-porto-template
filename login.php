@@ -16,6 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($result->num_rows > 0) {
         // Jika admin, arahkan ke data_presensi.php
         $_SESSION['role'] = 'admin';
+        $_SESSION['username'] = $username;
         header("Location: data_presensi.php");
         exit();
     }

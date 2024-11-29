@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once $_SERVER['DOCUMENT_ROOT'] . '/azzyra-nathalyne/koneksi.php';
 
 $jurusan_filters = isset($_GET['jurusan']) ? $_GET['jurusan'] : [];
@@ -83,6 +84,14 @@ $kelas_options = ['X', 'XI', 'XII'];
 
     <header>
         <h2 class="mb-5">Presensi</h2>
+        <?php
+        if (isset($_SESSION['username'])) {
+            echo "<h5>Selamat datang kembali, " . htmlspecialchars($_SESSION['username']) . "!</h5>";
+        }
+        ?>
+        <form action="logout.php" method="post" class="mt-3">
+            <button type="submit" class="btn btn-danger">Logout</button>
+        </form>
     </header>
 
     <form method="GET" action="" class="mb-4 d-flex">
