@@ -2,15 +2,6 @@
     box-sizing: border-box;
 }
 
-header {
-    background-color: #006fff;
-    padding: 30px;
-    text-align: center;
-    font-size: 35px;
-    color: white;
-    border-radius: 20px;
-}
-
 article {
     float: left;
     padding: 20px;
