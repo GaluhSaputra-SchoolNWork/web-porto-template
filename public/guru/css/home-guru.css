@@ -88,10 +88,6 @@ a {
 	}
 }
 
-.app-header-logo {
-	text-align: center;
-}
-
 .app-header-navigation {
 	@media (max-width: 1200px) {
 		display: none;
@@ -126,6 +122,11 @@ a {
 
 .app-body {
 	height: 100%;
+	display: grid;
+	grid-template-columns: minmax(min-content, 175px) minmax(max-content, 1fr) minmax(
+			min-content,
+			400px
+		);
 
 	column-gap: 4rem;
 	padding-top: 2.5rem;
@@ -136,6 +137,18 @@ a {
 			margin-bottom: 3.5rem;
 		}
 	}
+}
+
+.app-body-navigation {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	@media (max-width: 1200px) {
+		display: none;
+	}
+}
+
+.app-body-sidebar {
 }
 
 .footer {

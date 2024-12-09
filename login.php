@@ -31,12 +31,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($result->num_rows > 0) {
         // Jika guru, arahkan ke riwayat.php
         $_SESSION['role'] = 'guru';
-        header("Location: riwayat.php");
+        header("Location: public/guru/pages/home.php");
         exit();
     }
 
     // Cek di tabel login_siswa
-    $query = "SELECT * FROM login_siswa WHERE user_siswa = ? AND pw_siswa = ?";
+    $query = "SELECT ls.*, s.nama_siswa FROM login_siswa ls JOIN siswa s ON ls.user_siswa = s.nisn WHERE ls.user_siswa = ? AND ls.pw_siswa = ?";
     $stmt = $conn->prepare($query);
     $stmt->bind_param("ss", $username, $password);
     $stmt->execute();
@@ -44,8 +44,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if ($result->num_rows > 0) {
         // Jika siswa, arahkan ke absen.php
+        $siswa_data = $result->fetch_assoc();
         $_SESSION['role'] = 'siswa';
-        header("Location: absen.php");
+        $_SESSION['username'] = $siswa_data['user_siswa']; // Ambil nisn
+        $_SESSION['nama_siswa'] = $siswa_data['nama_siswa']; // Ambil nama_siswa
+        header("Location: public/siswa/pages/home.php");
         exit();
     }
 
