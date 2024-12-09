@@ -9,13 +9,13 @@
   background: #2D2F36;
 }
 body {
-  background: white;
+  background: black;
   font-family: 'Inter UI', sans-serif;
   margin: 0;
   padding: 20px;
 }
 .page {
-  background: #e2e2e5;
+  background: #1c1c1c;
   display: flex;
   flex-direction: column;
   height: calc(100% - 40px);
@@ -44,7 +44,7 @@ body {
   }
 }
 .left {
-  background: white;
+  background: #323232;
   height: calc(100% - 40px);
   top: 20px;
   position: relative;
@@ -59,18 +59,21 @@ body {
   }
 }
 .login {
+  color: #FBFFFF;
   font-size: 50px;
   font-weight: 900;
   margin: 50px 40px 40px;
 }
 .eula {
-  color: #999;
+  color: #FBFFFF;
   font-size: 14px;
   line-height: 1.5;
   margin: 40px;
 }
 .right {
-  background: #474A59;
+  background: #4c4c4c;
+  border-radius: 2px;
+  border-color: #FBFFFF;
   box-shadow: 0px 0px 40px 16px rgba(0,0,0,0.22);
   color: #F1F1F2;
   position: relative;
@@ -99,7 +102,7 @@ form {
   position: absolute;
 }
 label {
-  color:  #c2c2c5;
+  color:  #FBFFFF;
   display: block;
   font-size: 14px;
   height: 16px;

@@ -643,7 +643,7 @@ a {
 	align-items: center;
 	width: 100%;
 	font-size: 0.875rem;
-	@media (max-width: 1000px) {
+	@media (max-width: 1250px) {
 		align-items: flex-start;
 		flex-direction: column;
 	}

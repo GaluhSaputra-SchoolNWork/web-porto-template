@@ -18,7 +18,7 @@ if ($result->num_rows > 0) {
 
 <body class="p-5">
     <h2>Edit Data Presensi</h2>
-    <form action="../actions/update.php" method="POST">
+    <form action="../../actions/update.php" method="POST">
         <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
         <label for="judul">NISN :</label>
         <input class="form-control" type="text" id="nisn" name="nisn" value="<?php echo $row['nisn']; ?>" required><br>
@@ -35,13 +35,13 @@ if ($result->num_rows > 0) {
         <input class="form-control" type="date" id="tanggal" name="tanggal" value="<?php echo $row['tanggal']; ?>" required><br>
         
         <label for="jam_masuk">Jam Masuk :</label><br>
-        <input class="form-control" type="time" id="jam_masuk" name="jam_masuk" value="<?php echo $row['jam_masuk']; ?>" required><br>
+        <input class="form-control" type="time" id="jam_masuk" name="jam_masuk" value="<?php echo $row['jam_masuk']; ?>"><br>
         
         <label for="keterangan">Keterangan :
         </label><br>
         <textarea class="form-control" type="text" id="keterangan" name="keterangan" value="<?php echo $row['keterangan']; ?>" required></textarea><br>
         
-        <a href="../data_presensi.php" class="btn btn-secondary">Kembali</a>
+        <a href="../../../../dashboard-admin.php" class="btn btn-secondary">Kembali</a>
         <button class="btn btn-secondary" type="reset">Reset</button>
         <button class="btn btn-primary" type="submit">Update</button>
     </form>

@@ -13,7 +13,7 @@ switch ($type) {
         $sql = "SELECT s.*, j.* FROM siswa s JOIN jurusan j ON s.id_jurusan = j.id_jurusan ORDER BY nisn ASC";
         break;
     case 'guru':
-        $sql = "SELECT * FROM guru"; // Ganti dengan query yang sesuai
+        $sql = "SELECT * FROM guru";
         break;
     default:
         echo "<span>Invalid data type.</span>";
@@ -23,7 +23,6 @@ switch ($type) {
 $result = $conn->query($sql);
 
 if ($type === 'presensi') {
-    // Tampilkan data presensi dalam tabel
     echo '<h2 class="mb-5">Presensi</h2>';
     echo '<table class="table table-dark">
             <thead>
@@ -56,11 +55,11 @@ if ($type === 'presensi') {
             echo "<td>" . htmlspecialchars($row['keterangan']) . "</td>";
             echo "<td>" . htmlspecialchars($row['jam_masuk']) . "</td>";
             echo "<td>
-                    <button type=\"button\" class=\"btn btn-light btn-sm\">
-                        <a href='./pages/edit.php?id=" . $row['id'] . "'>Edit</a>
+                    <button type=\"button\" class=\"btn btn-success btn-sm\">
+                        <a href='data/process/pages/presensi/edit-presensi.php?id=" . $row['id'] . "'>Edit</a>
                     </button> | 
-                    <button type=\"button\" class=\"btn btn-light btn-sm\">
-                        <a href='./actions/delete.php?id=" . $row['id'] . "' onclick='return confirm(\"Apakah anda yakin ingin menghapus data ini?\");'>Hapus</a>
+                    <button type=\"button\" class=\"btn btn-danger btn-sm\">
+                        <a href='./data/process/actions/hapus.php?id=" . $row['id'] . "' onclick='return confirm(\"Apakah anda yakin ingin menghapus data ini?\");'>Hapus</a>
                     </button>
                   </td>";
             echo "</tr>";
@@ -71,7 +70,6 @@ if ($type === 'presensi') {
     echo '</tbody></table>';
 
 } elseif ($type === 'siswa') {
-    // Tampilkan data siswa dalam kartu
     echo '<h2 class="mb-5">Data Siswa</h2>';
     echo '<div class="card-container">';
     
@@ -79,7 +77,7 @@ if ($type === 'presensi') {
         while ($row = $result->fetch_assoc()) {
             $src = $row['foto_siswa'] === NULL ? 'group_4.png' : $row['foto_siswa'];
             echo '<div class="card text-bg-dark mb-3">';
-            echo '<img src="fotosiswa/' . $src . '" class="card-img-top" alt="' . htmlspecialchars($row['nama_siswa']) . '">';
+            echo '<img src="img/fotosiswa/' . $src . '" class="card-img-top" alt="' . htmlspecialchars($row['nama_siswa']) . '">';
             echo '<div class="card-body">';
             echo '<h5 class="card-title">' . htmlspecialchars($row['nama_siswa']) . '</h5>';
             echo '<p class="card-text">NISN: ' . htmlspecialchars($row['nisn']) . '</p>';
@@ -87,16 +85,15 @@ if ($type === 'presensi') {
             echo '<p class="card-text">Jurusan: ' . htmlspecialchars($row['jurusan']) . '</p>';
             echo '<a href="./pages/edit.php?id=' . $row['nisn'] . '" class="btn btn-success btn-sm">Edit</a> <br><br>';
             echo '<a href="./actions/delete.php?id=' . $row['nisn'] . '" class="btn btn-danger btn-sm" onclick="return confirm(\'Apakah anda yakin ingin menghapus data ini?\');">Hapus</a>';
-            echo '</div>'; // Menutup div.card-body
-            echo '</div>'; // Menutup div.card
+            echo '</div>';
+            echo '</div>';
         }
     } else {
         echo "<div class='col-12'>Belum ada data.</div>";
     }
-    echo '</div>'; // Menutup div.card-container
+    echo '</div>';
 
 } elseif ($type === 'guru') {
-    // Tampilkan data guru dalam kartu
     echo '<h2 class="mb-5">Data Guru</h2>';
     echo '<div class="card-container">';
     
@@ -104,20 +101,20 @@ if ($type === 'presensi') {
         while ($row = $result->fetch_assoc()) {
             $src = $row['foto_guru'] === NULL ? 'group_4.png' : $row['foto_guru'];
             echo '<div class="card text-bg-dark mb-3">';
-            echo '<img src="fotoguru/' . $src . '" class="card-img-top" alt="' . htmlspecialchars($row['nama_guru']) . '">';
+            echo '<img src="img/fotoguru/' . $src . '" class="card-img-top" alt="' . htmlspecialchars($row['nama_guru']) . '">';
             echo '<div class="card-body">';
             echo '<h5 class="card-title">' . htmlspecialchars($row['nama_guru']) . '</h5>';
             echo '<p class="card-text">NIP: ' . htmlspecialchars($row['nip']) . '</p>';
             echo '<p class="card-text">Nama: ' . htmlspecialchars($row['nama_guru']) . '</p>';
             echo '<a href="./pages/edit.php?id=' . $row['nip'] . '" class="btn btn-success btn-sm">Edit</a> <br><br>';
             echo '<a href="./actions/delete.php?id=' . $row['nip'] . '" class="btn btn-danger btn-sm" onclick="return confirm(\'Apakah anda yakin ingin menghapus data ini?\');">Hapus</a>';
-            echo '</div>'; // Menutup div.card-body
-            echo '</div>'; // Menutup div.card
+            echo '</div>';
+            echo '</div>';
         }
     } else {
         echo "<div class='col-12'>Belum ada data.</div>";
     }
-    echo '</div>'; // Menutup div.card-container
+    echo '</div>';
 }
 ?>
 <!DOCTYPE html>

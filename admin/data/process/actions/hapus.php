@@ -4,7 +4,7 @@ $id = $_GET['id'];
 $sql = "DELETE FROM presensi WHERE id=$id";
 if ($conn->query($sql) === TRUE) {
     echo "Data berhasil dihapus!";
-    header("Location: ../data_presensi.php");
+    header("Location: ../../../get_data.php");
 } else {
     echo "Error: " . $sql . "<br>" . $conn->error;
 }

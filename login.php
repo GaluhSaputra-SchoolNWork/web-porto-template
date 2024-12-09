@@ -17,7 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Jika admin, arahkan ke data_presensi.php
         $_SESSION['role'] = 'admin';
         $_SESSION['username'] = $username;
-        header("Location: data_presensi.php");
+        header("Location: admin/dashboard-admin.php");
         exit();
     }
 
