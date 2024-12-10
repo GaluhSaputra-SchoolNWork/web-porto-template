@@ -100,9 +100,27 @@ a {
 
 .app-header-actions {
 	display: flex;
-	align-items: center;
+	align-self: center;
+	text-align: center;
 	@media (max-width: 1200px) {
 		display: none;
+	}
+	flex-wrap: wrap;
+	justify-content: center;
+
+	span {
+		display: flex;
+		align-self: center;
+		text-align: center;
+	}
+
+	form {
+		display: flex;
+	}
+
+	button {
+		display: grid;
+		align-items: center;
 	}
 }
 
