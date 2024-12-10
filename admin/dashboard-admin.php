@@ -49,10 +49,10 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/azzyra-nathalyne/koneksi.php';
 								<a class="nav-link text-light" href="dashboard-admin-presensi.php">Presensi</a>
 							</li>
 							<li class="nav-item">
-								<a class="nav-link text-light" href="#">Siswa</a>
+								<a class="nav-link text-light" href="dashboard-admin-siswa.php">Siswa</a>
 							</li>
 							<li class="nav-item">
-								<a class="nav-link text-light disabled" aria-disabled="true">Guru</a>
+								<a class="nav-link text-light" href="dashboard-admin-guru.php">Guru</a>
 							</li>
 						</ul>
 					</div>
@@ -75,9 +75,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/azzyra-nathalyne/koneksi.php';
 	</header>
 
 	<div class="app-body">
-
-		<!-- <div class="app-body-navigation">
-		</div> -->
 
 		<div class="app-body-main-content">
 			<section class="service-section">
@@ -105,7 +102,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/azzyra-nathalyne/koneksi.php';
 								<span>Data Presensi</span>
 							</h3>
 						</div>
-						<a href="#">
+						<a href="dashboard-admin-presensi.php">
 							<span>Lihat Data</span>
 							<span class="icon-button">
 								<i class="ph ph-arrow-right"></i>
@@ -114,7 +111,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/azzyra-nathalyne/koneksi.php';
 					</article>
 					<article class="tile" data-type="siswa">
 						<div class="tile-header">
-							<i class="ph ph-database"></i>
+							<i class="ph ph-student"></i>
 							<h3>
 								<?php
 									$query = "SELECT COUNT(*) AS total FROM siswa";
@@ -132,7 +129,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/azzyra-nathalyne/koneksi.php';
 								<span>Data Siswa</span>
 							</h3>
 						</div>
-						<a href="#">
+						<a href="dashboard-admin-siswa.php">
 							<span>Lihat Data</span>
 							<span class="icon-button">
 								<i class="ph ph-arrow-right"></i>
@@ -141,7 +138,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/azzyra-nathalyne/koneksi.php';
 					</article>
 					<article class="tile" data-type="guru">
 						<div class="tile-header">
-							<i class="ph ph-database"></i>
+							<i class="ph ph-chalkboard-teacher"></i>
 							<h3>
 								<?php
 									$query = "SELECT COUNT(*) AS total FROM guru";
@@ -159,7 +156,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/azzyra-nathalyne/koneksi.php';
 								<span>Data Guru</span>
 							</h3>
 						</div>
-						<a href="#">
+						<a href="dashboard-admin-guru.php">
 							<span>Lihat Data</span>
 							<span class="icon-button">
 								<i class="ph ph-arrow-right"></i>
@@ -170,48 +167,9 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/azzyra-nathalyne/koneksi.php';
 				<div class="service-section-footer">
 				</div>
 			</section>
-			<section class="transfer-section">
-				<div class="transfer-section-header">
-					<h2>Data</h2>
-				</div>
-				<div class="transfers">
-                    <span> Tidak ada Data </span>
-				</div>
-			</section>
 		</div>
-
-		<!-- <div class="app-body-sidebar">
-		</div> -->
-
 	</div>
 
 </div>
-<script>
-document.querySelectorAll('.tile').forEach(tile => {
-    tile.addEventListener('click', function(event) {
-        event.preventDefault();
-        const type = this.getAttribute('data-type');
-        loadData(type);
-    });
-});
-
-function loadData(type) {
-    const transfersDiv = document.querySelector('.transfers');
-    
-    transfersDiv.innerHTML = '';
-
-    const jurusanFilters = Array.from(document.querySelectorAll('input[name="jurusan[]"]:checked')).map(el => el.value);
-
-    fetch(`data/process/get_data.php?type=${type}`)
-        .then(response => response.text())
-        .then(data => {
-            transfersDiv.innerHTML = data;
-        })
-        .catch(error => {
-            console.error('Error fetching data:', error);
-            transfersDiv.innerHTML = '<span>Error loading data.</span>';
-        });
-}
-</script>
 </body>
 </html>
