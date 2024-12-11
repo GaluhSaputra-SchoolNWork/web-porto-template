@@ -6,7 +6,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST['username'];
     $password = $_POST['password'];
 
-    // Cek di tabel login_admin
     $query = "SELECT * FROM login_admin WHERE user_admin = ? AND pw_admin = ?";
     $stmt = $conn->prepare($query);
     $stmt->bind_param("ss", $username, $password);
@@ -14,14 +13,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $result = $stmt->get_result();
 
     if ($result->num_rows > 0) {
-        // Jika admin, arahkan ke data_presensi.php
         $_SESSION['role'] = 'admin';
         $_SESSION['username'] = $username;
-        header("Location: admin/dashboard-admin.php");
+        header("Location: admin/dashboard/dashboard-admin.php");
         exit();
     }
 
-    // Cek di tabel login_guru
     $query = "SELECT * FROM login_guru WHERE user_guru = ? AND pw_guru = ?";
     $stmt = $conn->prepare($query);
     $stmt->bind_param("ss", $username, $password);
@@ -29,13 +26,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $result = $stmt->get_result();
 
     if ($result->num_rows > 0) {
-        // Jika guru, arahkan ke riwayat.php
         $_SESSION['role'] = 'guru';
         header("Location: public/guru/pages/home.php");
         exit();
     }
 
-    // Cek di tabel login_siswa
     $query = "SELECT ls.*, s.nama_siswa FROM login_siswa ls JOIN siswa s ON ls.user_siswa = s.nisn WHERE ls.user_siswa = ? AND ls.pw_siswa = ?";
     $stmt = $conn->prepare($query);
     $stmt->bind_param("ss", $username, $password);
@@ -43,17 +38,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $result = $stmt->get_result();
 
     if ($result->num_rows > 0) {
-        // Jika siswa, arahkan ke absen.php
         $siswa_data = $result->fetch_assoc();
         $_SESSION['role'] = 'siswa';
-        $_SESSION['username'] = $siswa_data['user_siswa']; // Ambil nisn
-        $_SESSION['nama_siswa'] = $siswa_data['nama_siswa']; // Ambil nama_siswa
+        $_SESSION['username'] = $siswa_data['user_siswa'];
+        $_SESSION['nama_siswa'] = $siswa_data['nama_siswa'];
         header("Location: public/siswa/pages/home.php");
         exit();
     }
-
-    // Jika tidak ada yang cocok
-    echo "Email atau password salah/tidak terdaftar!";
+    echo "<h5 style='color: #ffffff'>Email atau password salah/tidak terdaftar!</h5>";
 }
 ?>
 

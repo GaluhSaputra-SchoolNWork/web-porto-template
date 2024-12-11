@@ -2,9 +2,102 @@
 session_start();
 require_once $_SERVER['DOCUMENT_ROOT'] . '/azzyra-nathalyne/koneksi.php';
 
-$sql = "SELECT s.*, j.* FROM siswa s JOIN jurusan j ON s.id_jurusan = j.id_jurusan ORDER BY nisn ASC";
+$jurusan_filters = isset($_GET['jurusan']) ? $_GET['jurusan'] : [];
+$status_filters = isset($_GET['status']) ? $_GET['status'] : [];
+$kelas_filters = isset($_GET['kelas']) ? $_GET['kelas'] : [];
+$nama_siswa_filter = isset($_GET['nama_siswa']) ? $_GET['nama_siswa'] : '';
+$nisn_filter = isset($_GET['nisn']) ? $_GET['nisn'] : '';
+$keterangan_filter = isset($_GET['keterangan']) ? $_GET['keterangan'] : '';
 
-$result = $conn->query($sql);
+$sql = "SELECT p.*, s.*, j.* FROM presensi p
+        JOIN siswa s ON p.nisn = s.nisn
+        JOIN jurusan j ON j.id_jurusan = s.id_jurusan";
+
+$conditions = [];
+$params = [];
+
+// $result = $conn->query($sql);
+
+if (!empty($jurusan_filters)) {
+    $placeholders = implode(',', array_fill(0, count($jurusan_filters), '?'));
+    $conditions[] = "j.id_jurusan IN ($placeholders)";
+    $params = array_merge($params, $jurusan_filters);
+}
+
+if (!empty($status_filters)) {
+    $placeholders = implode(',', array_fill(0, count($status_filters), '?'));
+    $conditions[] = "p.status IN ($placeholders)";
+    $params = array_merge($params, $status_filters);
+}
+
+if (!empty($kelas_filters)) {
+    $placeholders = implode(',', array_fill(0, count($kelas_filters), '?'));
+    $conditions[] = "s.kelas IN ($placeholders)";
+    $params = array_merge($params, $kelas_filters);
+}
+
+if (!empty($nama_siswa_filter)) {
+    $conditions[] = "s.nama_siswa LIKE ?";
+    $params[] = '%' . $nama_siswa_filter . '%';
+}
+
+if (!empty($nisn_filter)) {
+    $conditions[] = "s.nisn LIKE ?";
+    $params[] = '%' . $nisn_filter . '%';
+}
+
+if (!empty($keterangan_filter)) {
+    $conditions[] = "p.keterangan LIKE ?";
+    $params[] = '%' . $keterangan_filter . '%';
+}
+
+if (!empty($_GET['tanggal_dari'])) {
+    $conditions[] = "p.tanggal >= ?";
+    $params[] = $_GET['tanggal_dari'];
+}
+
+if (!empty($_GET['tanggal_sampai'])) {
+    $conditions[] = "p.tanggal <= ?";
+    $params[] = $_GET['tanggal_sampai'];
+}
+
+if (!empty($_GET['jam_dari'])) {
+    $conditions[] = "p.jam_masuk >= ?";
+    $params[] = $_GET['jam_dari'];
+}
+
+if (!empty($_GET['jam_sampai'])) {
+    $conditions[] = "p.jam_masuk <= ?";
+    $params[] = $_GET['jam_sampai'];
+}
+
+if (!empty($conditions)) {
+    $sql .= " WHERE " . implode(' AND ', $conditions);
+}
+
+$sql .= " ORDER BY p.id ASC";
+
+$stmt = $conn->prepare($sql);
+if (!empty($params)) {
+    $stmt->bind_param(str_repeat('s', count($params)), ...$params);
+}
+$stmt->execute();
+$result = $stmt->get_result();
+
+if (!$result) {
+    die("Query Error: " . $conn->error);
+}
+
+$jurusan_sql = "SELECT * FROM jurusan";
+$jurusan_result = $conn->query($jurusan_sql);
+$jurusan_options = [];
+while ($jurusan_row = $jurusan_result->fetch_assoc()) {
+    $jurusan_options[] = $jurusan_row;
+}
+
+$status_options = ['Hadir', 'Sakit', 'Izin', 'Alfa'];
+
+$kelas_options = ['X', 'XI', 'XII'];
 ?>
 
 <!DOCTYPE html>
@@ -15,7 +108,7 @@ $result = $conn->query($sql);
     <title>Dashboard Admin</title>
     <!-- <link rel="stylesheet" href="css/card.css"> -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link rel="stylesheet" href="css/dashboard-admin.css">
+    <link rel="stylesheet" href="../css/dashboard-admin.css">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 </head>
 <body>
@@ -36,8 +129,8 @@ $result = $conn->query($sql);
             <div class="app-header-navigation">
                 <nav class="navbar navbar-expand-lg">
                     <div class="container-fluid">
-                        <a class="navbar-brand text-light" href="#">
-                            <img src="../starlightlogo.png" alt="Logo" width="30" height="30" class="d-inline-block align-text-top">
+                        <a class="navbar-brand text-light" href="">
+                            <img src="../../starlightlogo.png" alt="Logo" width="30" height="30" class="d-inline-block align-text-top">
                             Starlight
                         </a>
                         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -47,16 +140,16 @@ $result = $conn->query($sql);
                         <div class="collapse navbar-collapse" id="navbarNav">
                             <ul class="navbar-nav">
                                 <li class="nav-item">
-                                    <a class="nav-link text-light" aria-current="page" href="dashboard-admin.php">Beranda</a>
+                                    <a class="nav-link text-light" href="dashboard-admin.php">Beranda</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link text-light active" href="dashboard-admin-presensi.php">Presensi</a>
+                                    <a class="nav-link text-light active" aria-current="page" href="">Presensi</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link text-light" href="#">Siswa</a>
+                                    <a class="nav-link text-light" href="dashboard-admin-siswa.php">Siswa</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link text-light" aria-disabled="true">Guru</a>
+                                    <a class="nav-link text-light" href="dashboard-admin-guru.php">Guru</a>
                                 </li>
                             </ul>
                         </div>
@@ -86,7 +179,7 @@ $result = $conn->query($sql);
                 </section>
 
                 <div class="service-section-header">
-                    <a class= "btn btn-primary" href="data/pages/tambah-presensi.php">Tambah Data Baru</a><br><br>
+                    <a class= "btn btn-primary" href="../controls/presensi/tambah/add.php">Tambah Data Baru</a><br><br>
                 </div><br>
 
                 <form method="GET" action="" class="mb-4 d-flex">
@@ -229,8 +322,8 @@ $result = $conn->query($sql);
                                         echo "<td>" . $row['status'] . "</td>";
                                         echo "<td>" . $row['keterangan'] . "</td>";
                                         echo "<td>" . $row['jam_masuk'] . "</td>";
-                                        echo "<td> <button type=\"button\" class=\"btn btn-success btn-sm\"><a href='./pages/edit.php?id=" . $row['id'] . "'>Edit</a></button> | ";
-                                        echo "<button type=\"button\" class=\"btn btn-danger btn-sm\"><a href='./actions/delete.php?id=" . $row['id'] . "' onclick='return confirm(\"Apakah anda yakin ingin menghapus data ini?\");'>Hapus</a></button> </td>";
+                                        echo "<td> <button type=\"button\" class=\"btn btn-success btn-sm\"><a href='../controls/presensi/edit/edit.php?id=" . $row['id'] . "'>Edit</a></button> | ";
+                                        echo "<button type=\"button\" class=\"btn btn-danger btn-sm\"><a href='../controls/presensi/hapus/delete.php?id=" . $row['id'] . "' onclick='return confirm(\"Apakah anda yakin ingin menghapus data ini?\");'>Hapus</a></button> </td>";
                                         echo "</td>";
                                         echo "</tr>";
                                     }
