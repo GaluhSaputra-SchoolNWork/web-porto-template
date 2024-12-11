@@ -63,7 +63,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/azzyra-nathalyne/koneksi.php';
 
 		<div class="app-header-actions">
 			<span>
-				<form action="../logout.php" method="post" class="mt-3">
+				<form action="../../logout.php" method="post" class="mt-3">
 					<button type="submit" class="btn btn-danger">Logout</button>
 				</form>
 			</span>

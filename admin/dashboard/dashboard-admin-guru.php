@@ -110,7 +110,7 @@ while ($jurusan_row = $jurusan_result->fetch_assoc()) {
 
             <div class="app-header-actions">
                 <span>
-                    <form action="../logout.php" method="post" class="mt-3">
+                    <form action="../../logout.php" method="post" class="mt-3">
                         <button type="submit" class="btn btn-danger">Logout</button>
                     </form>
                 </span>
@@ -195,7 +195,7 @@ while ($jurusan_row = $jurusan_result->fetch_assoc()) {
                                 echo '<p class="card-text">Jurusan: ' . htmlspecialchars($row['jurusan']) . '</p>';
                                 echo '<p class="card-text">Password: ' . htmlspecialchars($row['pw_guru']) . '</p>';
                                 echo '<a href="../controls/guru/edit/edit.php?id=' . $row['nip'] . '" class="btn btn-success btn-sm">Edit</a> <br><br>';
-                                echo '<a href="./actions/delete.php?id=' . $row['nip'] . '" class="btn btn-danger btn-sm" onclick="return confirm(\'Apakah anda yakin ingin menghapus data ini?\');">Hapus</a>';echo '</div>';
+                                echo '<a href="../controls/guru/hapus/delete.php?id=' . $row['nip'] . '" class="btn btn-danger btn-sm" onclick="return confirm(\'Apakah anda yakin ingin menghapus data ini?\');">Hapus</a>';echo '</div>';
                                 echo '</div>';
                             }
                         } else {
