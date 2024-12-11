@@ -2,9 +2,63 @@
 session_start();
 require_once $_SERVER['DOCUMENT_ROOT'] . '/azzyra-nathalyne/koneksi.php';
 
+$nama_siswa_filter = isset($_GET['nama_siswa']) ? $_GET['nama_siswa'] : '';
+$nisn_filter = isset($_GET['nisn']) ? $_GET['nisn'] : '';
+$kelas_filters = isset($_GET['kelas']) ? $_GET['kelas'] : [];
+$jurusan_filters = isset($_GET['jurusan']) ? $_GET['jurusan'] : [];
+
 $sql = "SELECT s.*, j.*, l.* FROM siswa s JOIN jurusan j ON s.id_jurusan = j.id_jurusan JOIN login_siswa l ON l.user_siswa = s.nisn ";
 
-$result = $conn->query($sql);
+$conditions = [];
+$params = [];
+
+if (!empty($nama_siswa_filter)) {
+    $conditions[] = "s.nama_siswa LIKE ?";
+    $params[] = '%' . $nama_siswa_filter . '%';
+}
+
+if (!empty($nisn_filter)) {
+    $conditions[] = "s.nisn LIKE ?";
+    $params[] = '%' . $nisn_filter . '%';
+}
+
+if (!empty($kelas_filters)) {
+    $placeholders = implode(',', array_fill(0, count($kelas_filters), '?'));
+    $conditions[] = "s.kelas IN ($placeholders)";
+    $params = array_merge($params, $kelas_filters);
+}
+
+if (!empty($jurusan_filters)) {
+    $placeholders = implode(',', array_fill(0, count($jurusan_filters), '?'));
+    $conditions[] = "j.id_jurusan IN ($placeholders)";
+    $params = array_merge($params, $jurusan_filters);
+}
+
+if (!empty($conditions)) {
+    $sql .= " WHERE " . implode(' AND ', $conditions);
+}
+
+$sql .= " ORDER BY s.nama_siswa ASC";
+
+$stmt = $conn->prepare($sql);
+if (!empty($params)) {
+    $stmt->bind_param(str_repeat('s', count($params)), ...$params);
+}
+$stmt->execute();
+$result = $stmt->get_result();
+
+if (!$result) {
+    die("Query Error: " . $conn->error);
+}
+
+$jurusan_sql = "SELECT * FROM jurusan";
+$jurusan_result = $conn->query($jurusan_sql);
+$jurusan_options = [];
+while ($jurusan_row = $jurusan_result->fetch_assoc()) {
+    $jurusan_options[] = $jurusan_row;
+}
+
+$kelas_options = ['X', 'XI', 'XII'];
 ?>
 
 <!DOCTYPE html>
@@ -63,7 +117,7 @@ $result = $conn->query($sql);
                         </div>
                     </div>
                 </nav>
-                
+
             </div>
 
             <div class="app-header-actions">
@@ -87,26 +141,59 @@ $result = $conn->query($sql);
                 </section>
 
                 <div class="service-section-header">
-                    <a class= "btn btn-primary" href="data/pages/tambah-presensi.php">Tambah Data Baru</a><br><br>
+                    <a class= "btn btn-primary" href="../controls/siswa/tambah/add.php">Tambah Data Baru</a><br><br>
                 </div><br>
 
                 <form method="GET" action="" class="mb-4 d-flex">
                     <div class="row p-1">
-                        <div class="row p-2">
+                        <div class="col">
+                            <div class="me-4">
+                                <h5>Filter berdasarkan Jurusan:</h5>
+                                <?php foreach ($jurusan_options as $jurusan): ?>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="jurusan[]" value="<?php echo $jurusan['id_jurusan']; ?>" id="jurusan-<?php echo $jurusan['id_jurusan']; ?>" 
+                                        <?php if (in_array($jurusan['id_jurusan'], $jurusan_filters)) echo 'checked'; ?>>
+                                        <label class="form-check-label" for="jurusan-<?php echo $jurusan['id_jurusan']; ?>">
+                                            <?php echo $jurusan['jurusan']; ?>
+                                        </label>
+                                    </div>
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
+
+                        <div class="col">
+                            <div>
+                                <h5>Filter berdasarkan Kelas:</h5>
+                                <?php foreach ($kelas_options as $kelas): ?>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="kelas[]" value="<?php echo $kelas; ?>" id="kelas-<?php echo $kelas; ?>" 
+                                        <?php if (in_array($kelas, $kelas_filters)) echo 'checked'; ?>>
+                                        <label class="form-check-label" for="status-<?php echo $kelas; ?>">
+                                            <?php echo $kelas; ?>
+                                        </label>
+                                    </div>
+                                <?php endforeach; ?>
+                            </div>
                         </div>
 
                         <div class="row p-2">
+                            <div class="col">
+                                <h6>Cari Nama Siswa:</h6>
+                                <input type="text" name="nama_siswa" class="form-control" value="<?php echo isset($_GET['nama_siswa']) ? htmlspecialchars($_GET['nama_siswa']) : ''; ?>">
+                            </div>
+
+                            <div class="col">
+                                <h6>Cari NISN:</h6>
+                                <input type="text" name="nisn" class="form-control" value="<?php echo isset($_GET['nisn']) ? htmlspecialchars($_GET['nisn']) : ''; ?>">
+                            </div>
                         </div>
 
-                        <div class="row p-2">
-                        </div>
-                    
-                        <div cs="row">
+                        <div class="row">
                             <div class="col">
                                 <button type="submit" class="btn btn-primary mt-2 mw-250">Filter</button>
                             </div>
                             <div class="col">
-                                <a href="dashboard-admin-presensi.php" class="btn btn-primary mt-2 mw-250">Reset</a>
+                                <a href="dashboard-admin-siswa.php" class="btn btn-primary mt-2 mw-250">Reset</a>
                             </div>
                         </div>
                     </div>
@@ -123,7 +210,6 @@ $result = $conn->query($sql);
 
                 <div class="transfers">
                     <?php
-                        echo '<h2 class="mb-5">Data Siswa</h2>';
                         echo '<div class="card-container">';
                         
                         if ($result->num_rows > 0) {
@@ -137,8 +223,8 @@ $result = $conn->query($sql);
                                 echo '<p class="card-text">Kelas: ' . htmlspecialchars($row['kelas']) . '</p>';
                                 echo '<p class="card-text">Jurusan: ' . htmlspecialchars($row['jurusan']) . '</p>';
                                 echo '<p class="card-text">Password: ' . htmlspecialchars($row['pw_siswa']) . '</p>';
-                                echo '<a href="./pages/edit.php?id=' . $row['nisn'] . '" class="btn btn-success btn-sm">Edit</a> <br><br>';
-                                echo '<a href="./actions/delete.php?id=' . $row['nisn'] . '" class="btn btn-danger btn-sm" onclick="return confirm(\'Apakah anda yakin ingin menghapus data ini?\');">Hapus</a>';
+                                echo '<a href="../controls/siswa/edit/edit.php?id=' . $row['nisn'] . '" class="btn btn-success btn-sm">Edit</a> <br><br>';
+                                echo '<a href="../controls/siswa/hapus/delete.php?id=' . $row['nisn'] . '" class="btn btn-danger btn-sm" onclick="return confirm(\'Apakah anda yakin ingin menghapus data ini?\');">Hapus</a>';
                                 echo '</div>';
                                 echo '</div>';
                             }

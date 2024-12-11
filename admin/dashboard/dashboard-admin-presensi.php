@@ -310,7 +310,6 @@ $kelas_options = ['X', 'XI', 'XII'];
                             <?php
                                 if ($result->num_rows > 0) {
                                     $no = 1;
-                                    // Looping data dari database
                                     while ($row = $result->fetch_assoc()) {
                                         echo "<tr>";
                                         echo "<td>" . $no++ . "</td>";
