@@ -180,8 +180,8 @@ while ($jurusan_row = $jurusan_result->fetch_assoc()) {
                 </div>
 
                 <div class="transfers">
+                    <a href="../controls/guru/print/export.php" class="btn btn-primary mb-3">Unduh Data Guru (XLSX/CSV)</a>
                     <?php
-                        echo '<h4 class="mb-5">Data Guru</h4>';
                         echo '<div class="card-container">';
                         
                         if ($result->num_rows > 0) {

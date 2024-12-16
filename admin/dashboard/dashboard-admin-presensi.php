@@ -291,6 +291,7 @@ $kelas_options = ['X', 'XI', 'XII'];
                 </div>
 
                 <div class="transfers">
+                    <a href="../controls/presensi/print/export.php" class="btn btn-primary mb-3">Unduh Data Presensi (XLSX/CSV)</a>
                     <table class="table table-bordered table-dark">
                         <thead>
                             <tr>

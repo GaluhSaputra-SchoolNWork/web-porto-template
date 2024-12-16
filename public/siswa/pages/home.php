@@ -57,56 +57,10 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/azzyra-nathalyne/koneksi.php';
 				<div class="service-section-header">
 				</div>
                 
-				<div class="tiles">
-					<article class="tile" data-type="presensi">
-						<div class="tile-header">
-							<i class="ph ph-database"></i>
-							<h3>
-								<span>Data</span>
-								<span>Presensi</span>
-							</h3>
-						</div>
-						<a href="#">
-							<span>Lihat Data</span>
-							<span class="icon-button">
-								<i class="ph ph-arrow-right"></i>
-							</span>
-						</a>
-					</article>
-					<article class="tile" data-type="siswa">
-						<div class="tile-header">
-							<i class="ph ph-database"></i>
-							<h3>
-								<span>Data</span>
-								<span>Siswa</span>
-							</h3>
-						</div>
-						<a href="#">
-							<span>Lihat Data</span>
-							<span class="icon-button">
-								<i class="ph ph-arrow-right"></i>
-							</span>
-						</a>
-					</article>
-					<article class="tile" data-type="guru">
-						<div class="tile-header">
-							<i class="ph ph-database"></i>
-							<h3>
-								<span>Data</span>
-								<span>Guru</span>
-							</h3>
-						</div>
-						<a href="#">
-							<span>Lihat Data</span>
-							<span class="icon-button">
-								<i class="ph ph-arrow-right"></i>
-							</span>
-						</a>
-					</article>
-				</div>
 				<div class="service-section-footer">
 				</div>
 			</section>
+			
 			<section class="transfer-section">
 				<div class="transfer-section-header">
 					<h2>Data</h2>

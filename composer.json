@@ -1,0 +1,6 @@
+{
+    "name": "acer/azzyra-nathalyne",
+    "require": {
+        "phpoffice/phpspreadsheet": "^3.6"
+    }
+}

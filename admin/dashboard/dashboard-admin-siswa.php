@@ -209,6 +209,7 @@ $kelas_options = ['X', 'XI', 'XII'];
                 </div>
 
                 <div class="transfers">
+                    <a href="../controls/siswa/print/export.php" class="btn btn-primary mb-3">Unduh Data Siswa (XLSX/CSV)</a>
                     <?php
                         echo '<div class="card-container">';
                         
