@@ -13,6 +13,16 @@ if ($result->num_rows > 0) {
     $nama_siswa = $row['nama_siswa'];
     $_SESSION['nama_siswa'] = $nama_siswa;
 }
+
+if (!isset($_SESSION['username'])) {
+    header("Location: ../../../../login.php");
+    exit();
+}
+
+if (!isset($_SESSION['role']) || $_SESSION['role'] != 'siswa') {
+    header("Location: ../../../logout.php");
+    exit();
+}
 ?>
 
 <!DOCTYPE html>
