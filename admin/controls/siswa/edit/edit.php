@@ -7,6 +7,11 @@ if (!isset($_SESSION['username'])) {
     exit();
 }
 
+if (!isset($_SESSION['role']) || $_SESSION['role'] != 'admin') {
+    header("Location: ../../login.php");
+    exit();
+}
+
 $nisn = $_GET['id'];
 $result = $conn->query("SELECT s.*, j.jurusan FROM siswa s JOIN jurusan j ON s.id_jurusan = j.id_jurusan WHERE s.nisn = '$nisn'");
 

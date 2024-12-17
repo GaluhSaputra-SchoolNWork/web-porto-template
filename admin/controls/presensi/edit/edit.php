@@ -7,6 +7,11 @@ if (!isset($_SESSION['username'])) {
     exit();
 }
 
+if (!isset($_SESSION['role']) || $_SESSION['role'] != 'admin') {
+    header("Location: ../../login.php");
+    exit();
+}
+
 $id = $_GET['id'];
 $result = $conn->query("SELECT * FROM presensi WHERE id = $id");
 if ($result->num_rows > 0) {

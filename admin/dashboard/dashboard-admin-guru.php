@@ -7,6 +7,11 @@ if (!isset($_SESSION['username'])) {
     exit();
 }
 
+if (!isset($_SESSION['role']) || $_SESSION['role'] != 'admin') {
+    header("Location: ../../login.php");
+    exit();
+}
+
 $nama_guru_filter = isset($_GET['nama_guru']) ? $_GET['nama_guru'] : '';
 $nip_filter = isset($_GET['nip']) ? $_GET['nip'] : '';
 $jurusan_filters = isset($_GET['jurusan']) ? $_GET['jurusan'] : [];

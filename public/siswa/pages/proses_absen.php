@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt->bind_param("ssss", $nisn, $tanggal, $jam_masuk, $status);
 
     if ($stmt->execute()) {
-        echo "Data absen berhasil disimpan.";
+        header("Location: home.php");
         exit();
     } else {
         echo "Error: " . $stmt->error;
