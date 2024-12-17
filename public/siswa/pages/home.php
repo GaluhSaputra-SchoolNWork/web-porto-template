@@ -1,6 +1,18 @@
 <?php
 session_start();
 require_once $_SERVER['DOCUMENT_ROOT'] . '/azzyra-nathalyne/koneksi.php';
+
+$nisn = $_SESSION['nisn'];
+$query = "SELECT nama_siswa FROM siswa WHERE nisn = ?";
+$stmt = $conn->prepare($query);
+$stmt->bind_param("s", $nisn);
+$stmt->execute();
+$result = $stmt->get_result();
+if ($result->num_rows > 0) {
+    $row = $result->fetch_assoc();
+    $nama_siswa = $row['nama_siswa'];
+    $_SESSION['nama_siswa'] = $nama_siswa;
+}
 ?>
 
 <!DOCTYPE html>
@@ -55,6 +67,23 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/azzyra-nathalyne/koneksi.php';
 				<h2>Absen</h2>
 
 				<div class="service-section-header">
+					<div class="service-section-header">
+						<form action="proses_absen.php" method="post">
+							<div class="form-check form-check-inline">
+								<input class="form-check-input" type="radio" name="status" id="inlineRadio1" value="Hadir">
+								<label class="form-check-label" for="inlineRadio1">Hadir</label>
+							</div>
+							<div class="form-check form-check-inline">
+								<input class="form-check-input" type="radio" name="status" id="inlineRadio2" value="Sakit">
+								<label class="form-check-label" for="inlineRadio2">Sakit</label>
+							</div>
+							<div class="form-check form-check-inline">
+								<input class="form-check-input" type="radio" name="status" id="inlineRadio3" value="Izin">
+								<label class="form-check-label" for="inlineRadio3">Izin</label>
+							</div>
+							<input type="submit" value="Kirim Absen" class="btn btn-primary">
+						</form>
+					</div>
 				</div>
                 
 				<div class="service-section-footer">

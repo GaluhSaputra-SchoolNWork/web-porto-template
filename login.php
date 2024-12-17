@@ -31,7 +31,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit();
     }
 
-    $query = "SELECT ls.*, s.nama_siswa FROM login_siswa ls JOIN siswa s ON ls.user_siswa = s.nisn WHERE ls.user_siswa = ? AND ls.pw_siswa = ?";
+    $query = "SELECT * FROM login_siswa WHERE user_siswa = ? AND pw_siswa = ?";
     $stmt = $conn->prepare($query);
     $stmt->bind_param("ss", $username, $password);
     $stmt->execute();
@@ -41,10 +41,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $siswa_data = $result->fetch_assoc();
         $_SESSION['role'] = 'siswa';
         $_SESSION['username'] = $siswa_data['user_siswa'];
-        $_SESSION['nama_siswa'] = $siswa_data['nama_siswa'];
+        $_SESSION['nisn'] = $siswa_data['user_siswa']; // Langsung menyimpan user_siswa sebagai NISN
+        $_SESSION['nama_siswa'] = 'Siswa'; // Tambahkan placeholder jika nama siswa tidak diambil
         header("Location: public/siswa/pages/home.php");
         exit();
     }
+
     echo "<h5 style='color: #ffffff'>Email atau password salah/tidak terdaftar!</h5>";
 }
 ?>
