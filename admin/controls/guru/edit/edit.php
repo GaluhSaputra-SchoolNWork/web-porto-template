@@ -1,5 +1,12 @@
 <?php
+session_start();
 require_once $_SERVER['DOCUMENT_ROOT'] . '/azzyra-nathalyne/koneksi.php';
+
+if (!isset($_SESSION['username'])) {
+    header("Location: ../../../../login.php");
+    exit();
+}
+
 $nip = $_GET['id'];
 $result = $conn->query("SELECT g.*, j.jurusan FROM guru g JOIN jurusan j ON g.id_jurusan = j.id_jurusan WHERE g.nip = '$nip'");
 

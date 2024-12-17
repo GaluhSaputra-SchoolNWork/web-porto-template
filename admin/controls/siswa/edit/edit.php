@@ -1,5 +1,12 @@
 <?php
+session_start();
 require_once $_SERVER['DOCUMENT_ROOT'] . '/azzyra-nathalyne/koneksi.php';
+
+if (!isset($_SESSION['username'])) {
+    header("Location: ../../../../login.php");
+    exit();
+}
+
 $nisn = $_GET['id'];
 $result = $conn->query("SELECT s.*, j.jurusan FROM siswa s JOIN jurusan j ON s.id_jurusan = j.id_jurusan WHERE s.nisn = '$nisn'");
 

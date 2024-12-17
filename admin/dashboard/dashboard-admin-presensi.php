@@ -2,6 +2,11 @@
 session_start();
 require_once $_SERVER['DOCUMENT_ROOT'] . '/azzyra-nathalyne/koneksi.php';
 
+if (!isset($_SESSION['username'])) {
+    header("Location: ../../login.php");
+    exit();
+}
+
 $jurusan_filters = isset($_GET['jurusan']) ? $_GET['jurusan'] : [];
 $status_filters = isset($_GET['status']) ? $_GET['status'] : [];
 $kelas_filters = isset($_GET['kelas']) ? $_GET['kelas'] : [];

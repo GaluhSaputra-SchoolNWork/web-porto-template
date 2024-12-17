@@ -1,3 +1,13 @@
+<?php
+session_start();
+require_once $_SERVER['DOCUMENT_ROOT'] . '/azzyra-nathalyne/koneksi.php';
+
+if (!isset($_SESSION['username'])) {
+    header("Location: ../../../../login.php");
+    exit();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

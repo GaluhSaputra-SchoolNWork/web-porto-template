@@ -1,5 +1,12 @@
 <?php
+session_start();
 require_once $_SERVER['DOCUMENT_ROOT'] . '/azzyra-nathalyne/koneksi.php';
+
+if (!isset($_SESSION['username'])) {
+    header("Location: ../../../../login.php");
+    exit();
+}
+
 $id = $_GET['id'];
 $result = $conn->query("SELECT * FROM presensi WHERE id = $id");
 if ($result->num_rows > 0) {
