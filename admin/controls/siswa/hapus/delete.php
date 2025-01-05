@@ -1,6 +1,11 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/azzyra-nathalyne/koneksi.php';
 
+if (!isset($_SESSION['role']) || $_SESSION['role'] != 'admin') {
+    header("Location: ../../../../logout.php");
+    exit();
+}
+
 $nisn = $_GET['id'];
 
 $sql_login = "DELETE FROM login_siswa WHERE user_siswa = ?";

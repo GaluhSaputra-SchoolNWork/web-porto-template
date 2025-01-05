@@ -1,6 +1,11 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/azzyra-nathalyne/koneksi.php';
 
+if (!isset($_SESSION['role']) || $_SESSION['role'] != 'admin') {
+    header("Location: ../../../../logout.php");
+    exit();
+}
+
 $nisn = $_POST['nisn'];
 $nama_siswa = $_POST['nama_siswa'];
 $kelas = $_POST['kelas'];

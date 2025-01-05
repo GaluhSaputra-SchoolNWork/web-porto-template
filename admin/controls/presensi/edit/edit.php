@@ -8,7 +8,7 @@ if (!isset($_SESSION['username'])) {
 }
 
 if (!isset($_SESSION['role']) || $_SESSION['role'] != 'admin') {
-    header("Location: ../../../logout.php");
+    header("Location: ../../../../logout.php");
     exit();
 }
 

@@ -2,6 +2,11 @@
 require_once $_SERVER['DOCUMENT_ROOT'] . '/azzyra-nathalyne/koneksi.php';
 require $_SERVER['DOCUMENT_ROOT'] . '/azzyra-nathalyne/vendor/autoload.php';
 
+if (!isset($_SESSION['role']) || $_SESSION['role'] != 'admin') {
+    header("Location: ../../../../logout.php");
+    exit();
+}
+
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
